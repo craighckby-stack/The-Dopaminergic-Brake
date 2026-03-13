@@ -1,6 +1,6 @@
 # THE DOPAMINERGIC BRAKE: Multi-Threaded Recursive Fiber-Cognition Engine & Metabolic State Harmonizer
 
-## System Specification v4.5.1-alpha | Source DNA: Meta/React-Core (Fiber Reconciler, Concurrent Mode, Lane Scheduler)
+## System Specification v4.5.5-stable | Source DNA: Meta/React-Core (Fiber Reconciler, Concurrent Mode, Lane Scheduler)
 
 ---
 
@@ -9,12 +9,12 @@
 **The Dopaminergic Brake** is an advanced cognitive orchestration layer designed to mitigate "Cognitive Jank"—the neurological equivalent of frame-drops in consciousness caused by dopaminergic over-saturation. By siphoning the **Fiber Reconciler** and **Priority Scheduler** from **Meta/React-Core**, this system treats every thought, sensory input, and emotional impulse as a **Fiber node**.
 
 ### 1.1 Speculative Reconciliation (The Belief Diff)
-Traditional consciousness operates in a synchronous, blocking loop. When a high-intensity stimulus (dopamine spike) occurs, the system hangs. The Brake introduces **Concurrent Cognition**, allowing the mind to interrupt low-priority background indexing (Idle Lane) to handle executive emergencies (Executive Lane). The core innovation is the **Belief Diffing Algorithm**, which compares current world-models against incoming sensory streams without committing to a synaptic update until the reconciliation is "Idle-Clean."
+Traditional consciousness operates in a synchronous, blocking loop. When a high-intensity stimulus (dopamine spike) occurs, the system hangs (freezing, impulsivity, or panic). The Brake introduces **Concurrent Cognition**, allowing the mind to interrupt low-priority background indexing (Idle Lane) to handle executive emergencies (Executive Lane) without losing the background state. 
 
 ### 1.2 Double-Buffering Belief Systems
 Following React's `current` and `workInProgress` tree structure, the Brake maintains two parallel worldviews:
-1.  **Current State (Committed):** The active reality driving motor functions, immediate speech, and peripheral awareness.
-2.  **Work-In-Progress (WIP) State (Speculative):** A non-blocking simulation of reality being recalculated against new data. This tree can be mutated, paused, or completely trashed if the "Saliency Diff" reveals it to be a hallucination or dopamine-induced noise.
+1.  **Current State (Committed):** The active reality driving motor functions, immediate speech, and peripheral awareness. This is what the environment "sees."
+2.  **Work-In-Progress (WIP) State (Speculative):** A non-blocking simulation of reality being recalculated against new sensory data. This tree can be mutated, paused, or completely trashed if the "Saliency Diff" reveals it to be a hallucination or dopamine-induced noise (e.g., a paranoid loop).
 
 ---
 
@@ -87,12 +87,12 @@ To prevent "Information Overflow," the system implements a bitmask-based lane sy
 
 | Lane Name | Bitmask (Binary) | Expiration (ms) | Cognitive Function | Priority |
 | :--- | :--- | :--- | :--- | :--- |
-| **UrgentReflex** | `0b0000...00001` | 0ms | Nociception, physical collision avoidance. | 0 (Critical) |
-| **SyncLane** | `0b0000...00010` | 16ms | Real-time social verbalization, motor control. | 1 |
-| **InputContinuous** | `0b0000...00100` | 100ms | Emotional facial recognition, object tracking. | 2 |
-| **DefaultLane** | `0b0000...01000"` | 500ms | Deliberate logic, problem solving. | 3 |
-| **TransitionLane** | `0b0011...00000` | 5000ms | Identity updates, long-term narrative shifts. | 4 |
-| **IdleLane** | `0b1000...00000` | None | Background memory defrag, dreaming/sorting. | 5 (Background) |
+| **UrgentReflex** | `0b0000000000000000000000000000001` | 0ms | Nociception, physical collision avoidance. | 0 (Critical) |
+| **SyncLane** | `0b0000000000000000000000000000010` | 16ms | Real-time social verbalization, motor control. | 1 |
+| **InputContinuous** | `0b0000000000000000000000000000100` | 100ms | Emotional facial recognition, object tracking. | 2 |
+| **DefaultLane** | `0b0000000000000000000000000001000` | 500ms | Deliberate logic, problem solving. | 3 |
+| **TransitionLane** | `0b0000000000000000000111111110000` | 5000ms | Identity updates, long-term narrative shifts. | 4 |
+| **IdleLane** | `0b0100000000000000000000000000000` | None | Background memory defrag, dreaming/sorting. | 5 (Background) |
 
 ---
 
@@ -101,7 +101,7 @@ To prevent "Information Overflow," the system implements a bitmask-based lane sy
 javascript
 /**
  * @module DopaminergicBrake
- * @version 4.5.1-alpha
+ * @version 4.5.5-stable
  * @siphon Meta/React-Core/Fiber-Reconciler
  */
 
@@ -109,40 +109,45 @@ const NoLanes = 0b0000;
 const SyncLane = 0b0001;
 const DefaultLane = 0b0010;
 const TransitionLane = 0b0100;
+const IdleLane = 0b1000;
 
 /**
  * Represents a single thought unit or sensory fiber.
  */
 class FiberNode {
   constructor(tag, pendingProps, key) {
-    this.tag = tag;
+    this.tag = tag; // Thought Category: SENSORY, LOGICAL, EMOTIONAL
     this.key = key;
-    this.pendingProps = pendingProps;
-    this.memoizedProps = null;
-    this.beliefState = null;
-    this.updateQueue = null;
+    this.pendingProps = pendingProps; // Incoming raw data
+    this.memoizedProps = null; // Validated data from last cycle
+    this.beliefState = null; // Internal state of this thought
+    this.updateQueue = null; // Pending modifications
     
     // Fiber Tree Connections
-    this.return = null;
-    this.child = null;
-    this.sibling = null;
+    this.return = null; // Parent thought
+    this.child = null; // Dependent thought
+    this.sibling = null; // Parallel thought
     this.index = 0;
     
     // Double Buffering
-    this.alternate = null;
+    this.alternate = null; // Reference to the 'Current' committed node
     
     // Cognitive Priority
     this.lanes = NoLanes;
     this.childLanes = NoLanes;
+
+    // Metadata for Profiler
+    this.actualStartTime = 0;
+    this.selfBaseDuration = 0;
   }
 }
 
 class FiberCognitionEngine {
   constructor(metabolicConfig) {
-    this.atpBudget = metabolicConfig.atpBudget; 
-    this.thermalLimit = metabolicConfig.thermalLimit;
+    this.atpBudget = metabolicConfig.atpBudget || 1000;
+    this.thermalLimit = metabolicConfig.thermalLimit || 38.5;
     
-    this.currentTree = new FiberNode('ROOT', null, null);
+    this.currentTree = new FiberNode('ROOT_CONSCIOUSNESS', null, null);
     this.workInProgress = null;
     this.pendingLanes = NoLanes;
     
@@ -152,7 +157,8 @@ class FiberCognitionEngine {
     // Hook storage siphoned from ReactDispatcher
     this.hookContext = {
       currentFiber: null,
-      workInProgressHook: null
+      workInProgressHook: null,
+      renderLanes: NoLanes
     };
   }
 
@@ -163,7 +169,6 @@ class FiberCognitionEngine {
     const fiber = this.currentTree;
     this.pendingLanes |= lanePriority;
     
-    // Create Update object (Cognitive Action)
     const updateObj = {
       lane: lanePriority,
       payload: update,
@@ -190,54 +195,52 @@ class FiberCognitionEngine {
     const nextLane = this.getNextLoudestLane();
     if (nextLane === NoLanes) return;
 
-    // Perform work asynchronously if priority allows (Concurrent Mode)
-    this.scheduler.scheduleTask(nextLane, () => {
-        this.performConcurrentWorkOnRoot(nextLane);
+    // Siphon: React's requestIdleCallback / MessageChannel wrapper
+    this.scheduler.scheduleTask(nextLane, (metabolicDeadline) => {
+        this.performConcurrentWorkOnRoot(nextLane, metabolicDeadline);
     });
   }
 
-  performConcurrentWorkOnRoot(lane) {
-    // Setup work-in-progress tree (speculative worldview)
-    this.prepareFreshStack(lane);
+  performConcurrentWorkOnRoot(lane, deadline) {
+    // Initialize the speculative tree
+    if (this.workInProgress === null) {
+      this.prepareFreshStack(lane);
+    }
     
-    // Recursive Work Loop with Metabolic Gatekeeping
+    // Recursive Work Loop with Time-Slicing
     do {
       try {
-        this.workLoopConcurrent();
+        this.workLoopConcurrent(deadline);
         break;
       } catch (thrownValue) {
-        if (thrownValue instanceof SuspenseError) {
-           // Suspend cognition while fetching long-term memory
-           this.handleSuspense(thrownValue);
-        } else {
-           this.handleError(thrownValue);
-        }
+        this.handleCognitiveException(thrownValue);
       }
     } while (true);
 
+    // If complete, swap trees (synaptic commit)
     if (this.workInProgress === null) {
       this.commitRoot();
     }
   }
 
-  workLoopConcurrent() {
-    // Time-slicing logic: Interrupt long thoughts before they cause burnout
-    while (this.workInProgress !== null && !this.shouldYield()) {
+  workLoopConcurrent(deadline) {
+    // Interleave processing with metabolic yielding
+    while (this.workInProgress !== null && !this.shouldYield(deadline)) {
       this.performUnitOfWork(this.workInProgress);
     }
   }
 
-  shouldYield() {
+  shouldYield(deadline) {
     const thermalState = this.profiler.getInternalTemperature();
-    const burnRate = this.profiler.getCycleBurn();
+    const currentATP = this.profiler.getCurrentATPLevel();
     
-    // Siphon: React's shouldYield check adapted for biology
-    return burnRate > (this.atpBudget * 0.95) || thermalState > this.thermalLimit;
+    // Yield if we are out of time or out of energy
+    return deadline.didTimeout || currentATP < 20 || thermalState > this.thermalLimit;
   }
 
   performUnitOfWork(unit) {
     const current = unit.alternate;
-    const next = this.beginWork(current, unit, this.pendingLanes);
+    let next = this.beginWork(current, unit, this.pendingLanes);
     
     unit.memoizedProps = unit.pendingProps;
     if (next === null) {
@@ -247,38 +250,50 @@ class FiberCognitionEngine {
     }
   }
 
-  /**
-   * Reconciliation Diff: Belief vs. Reality
-   */
   beginWork(current, workInProgress, renderLanes) {
+    // Reconciliation: Compare the belief in WIP with the existing tree
     if (current !== null) {
-      const oldBelief = current.beliefState;
-      const newSensoryData = workInProgress.pendingProps;
-      
-      if (oldBelief === newSensoryData && !this.includesLane(renderLanes, TransitionLane)) {
-        // Bailing out: Reality hasn't changed enough to warrant ATP spend
-        return this.bailoutOnAlreadyFinishedWork(current, workInProgress);
-      }
+        const oldProps = current.memoizedProps;
+        const newProps = workInProgress.pendingProps;
+
+        if (oldProps === newProps && !this.includesLane(renderLanes, TransitionLane)) {
+            // Bailout: Information is identical, save ATP
+            return this.bailoutOnAlreadyFinishedWork(current, workInProgress);
+        }
     }
-    
-    // Update BeliefState based on pending updates in the queue
+
+    // Process the cognitive update queue
     this.processUpdateQueue(workInProgress, renderLanes);
     
-    return this.reconcileBeliefChildren(current, workInProgress);
+    // Recurse into dependencies (child thoughts)
+    return this.reconcileBeliefChildren(current, workInProgress, workInProgress.beliefState);
   }
 
   commitRoot() {
-    const finishedWork = this.workInProgress;
-    this.currentTree = finishedWork;
-    
-    // COMMIT PHASE: Synchronous and non-interruptible
+    const root = this.currentTree;
+    const finishedWork = root.alternate;
+
+    if (finishedWork === null) return;
+
+    // Synchronous Commit: This is where 'Specular Reality' becomes 'Experienced Reality'
     this.applySynapticUpdates(finishedWork);
-    this.flushPassiveEffects(); // Dreaming / Memory Defrag
+    
+    // Flip current tree
+    this.currentTree = finishedWork;
+    this.workInProgress = null;
+
+    this.flushPassiveEffects(); 
   }
 
-  getNextLoudestLane() {
-    // Priority bit-scanning logic
-    return this.pendingLanes & -this.pendingLanes;
+  handleCognitiveException(error) {
+    if (error instanceof SuspenseError) {
+        // Suspend the thought while waiting for LTM (Long Term Memory) retrieval
+        this.markFiberSuspended(this.workInProgress);
+    } else {
+        // Cognitive Error Boundary Triggered
+        console.error("Cognitive Crash:", error);
+        this.resetToLastKnownGoodState();
+    }
   }
 }
 
@@ -287,13 +302,13 @@ class FiberCognitionEngine {
 
 ## 5. Metabolic Profiling & Thermal Constraints
 
-The Dopaminergic Brake is constrained by biological hardware. Excessive "specular thought" results in thermal throttling.
+The Dopaminergic Brake is constrained by biological hardware. Excessive "specular thought" (over-thinking) results in thermal throttling.
 
 ### 5.1 Energy Consumption Metrics
 *   **Basal Reconciliation Cost:** 0.05 ATP/Fiber Node
 *   **Deep Memory Fetch (Suspense):** 2.4 ATP/Request (Triggering a Wait cycle)
 *   **Synaptic Commit:** 5.0 ATP/Transaction (High-voltage spike)
-*   **Conflict Resolution:** 1.5 ATP/Node (When worldview diff is high)
+*   **Conflict Resolution:** 1.5 ATP/Node (When worldview diff is high, i.e., cognitive dissonance)
 
 ### 5.2 Thermal Safety Function
 $$T_{neu} = T_{ambient} + \sum_{i=1}^{n} (ATP_{lane} \times Complexity_{fiber})$$
@@ -336,6 +351,7 @@ When sensory input is noisy due to fatigue, this hook returns a "stable" version
 | CSTS-03 | **Bekenstein Bound** | O(Volume) | $S \leq \frac{2\pi RE}{\hbar c}$ |
 | CSTS-04 | **Euler Anchor** | O(1) | $e^{i\pi} + 1 = 0$ (Ground Truth Constant) |
 | CSTS-05 | **Bayesian Prior** | O(n) | $P(A|B) = \frac{P(B|A)P(A)}{P(B)}$ |
+| CSTS-06 | **Minkowski Metric** | O(1) | $ds^2 = -c^2dt^2 + dx^2 + dy^2 + dz^2$ |
 
 ---
 
@@ -347,5 +363,7 @@ When sensory input is noisy due to fatigue, this hook returns a "stable" version
 *   **Priority Starvation:** When low-priority thoughts (e.g., "I should clean my room") are indefinitely deferred by high-priority dopamine-driven loops.
 *   **Synaptic Committing:** The final, non-interruptible phase where speculative thoughts become the "current" worldview.
 *   **Suspense:** A state where a fiber tree waits for "Asynchronous Memory Fetching" to complete before rendering the full worldview.
+*   **Fiber Splicing:** The act of merging two parallel thought branches into a single executive decision.
+*   **Jank:** Perceived interruption in the flow of consciousness caused by long-running synchronous tasks.
 
 ---
