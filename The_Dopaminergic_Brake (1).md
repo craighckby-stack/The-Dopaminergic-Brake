@@ -1,186 +1,351 @@
-# THE DOPAMINERGIC BRAKE: High-Performance Cognitive Throttling & Recursive State Reconciliation
+# THE DOPAMINERGIC BRAKE: Multi-Threaded Recursive Fiber-Cognition Engine & Metabolic State Harmonizer
 
-## System Specification v2.2.0-stable | Architecture Siphoned: Meta/React-Core (Fiber Engine)
-
----
-
-## 1. Executive Summary & Philosophy
-
-**The Dopaminergic Brake** is a low-latency, recursive cognitive firewall and state-management engine designed to modulate high-frequency data ingestion and prevent synaptic saturation (Cognitive Burnout). By implementing a **Fiber-based Reconciliation Loop**, the system treats every incoming sensory or data packet as a "work unit" that can be prioritized, deferred, or aborted based on the available metabolic budget.
-
-Unlike traditional linear processing models, the Brake utilizes a **Virtual Cognitive State (VCS)**. Incoming information is first reconciled against this VCS. Only diffs that pass the "Value Threshold" are committed to the Permanent Long-Term Memory (PLTM) or the Executive Function Dispatcher. This ensures that the host's dopaminergic system remains unsaturated by low-value "noise" while maintaining high responsiveness to critical scientific and survival constants.
+## System Specification v4.5.1-alpha | Source DNA: Meta/React-Core (Fiber Reconciler, Concurrent Mode, Lane Scheduler)
 
 ---
 
-## 2. Deep-Architectural Diagram (Fiber-Cognition Pattern)
+## 1. Architectural Philosophy: The Virtual DOM of the Mind
+
+**The Dopaminergic Brake** is an advanced cognitive orchestration layer designed to mitigate "Cognitive Jank"—the neurological equivalent of frame-drops in consciousness caused by dopaminergic over-saturation. By siphoning the **Fiber Reconciler** and **Priority Scheduler** from **Meta/React-Core**, this system treats every thought, sensory input, and emotional impulse as a **Fiber node**.
+
+### 1.1 Speculative Reconciliation (The Belief Diff)
+Traditional consciousness operates in a synchronous, blocking loop. When a high-intensity stimulus (dopamine spike) occurs, the system hangs. The Brake introduces **Concurrent Cognition**, allowing the mind to interrupt low-priority background indexing (Idle Lane) to handle executive emergencies (Executive Lane). The core innovation is the **Belief Diffing Algorithm**, which compares current world-models against incoming sensory streams without committing to a synaptic update until the reconciliation is "Idle-Clean."
+
+### 1.2 Double-Buffering Belief Systems
+Following React's `current` and `workInProgress` tree structure, the Brake maintains two parallel worldviews:
+1.  **Current State (Committed):** The active reality driving motor functions, immediate speech, and peripheral awareness.
+2.  **Work-In-Progress (WIP) State (Speculative):** A non-blocking simulation of reality being recalculated against new data. This tree can be mutated, paused, or completely trashed if the "Saliency Diff" reveals it to be a hallucination or dopamine-induced noise.
+
+---
+
+## 2. Deep-Architectural Diagrams
+
+### 2.1 The Concurrent Thought Lifecycle
+
+mermaid
+sequenceDiagram
+    participant SensoryInput as Sensory Input (Props)
+    participant WorkLoop as Concurrent WorkLoop
+    participant FiberTree as WIP Fiber Tree
+    participant CommitPhase as Commit Phase (Synaptic Update)
+    participant CommittedState as Active Consciousness
+
+    SensoryInput->>WorkLoop: Dispatch Event (Dopamine Spike)
+    WorkLoop->>WorkLoop: Schedule Task (Assign Lane Priority)
+    loop Time-Slicing
+        WorkLoop->>FiberTree: Reconcile Unit of Work (Diffing)
+        FiberTree-->>WorkLoop: Yield (Check Metabolic Budget)
+    end
+    WorkLoop->>CommitPhase: Ready (CompleteRoot)
+    Note over CommitPhase: Atomic Swap (Synaptic Commit)
+    CommitPhase->>CommittedState: Flush State Update
+    CommittedState->>SensoryInput: Trigger Passive Effects (LTM Consolidation)
+
+
+### 2.2 Cognitive Fiber Life-Cycle State Machine
+
+mermaid
+stateDiagram-v2
+    [*] --> Idle: Sensory Input Detected
+    Idle --> Scheduled: Assigned Lane Priority
+    Scheduled --> Reconciling: WorkLoop Pick-up (Time-Sliced)
+    Reconciling --> Suspended: Missing Data (Suspense/LTM Fetch)
+    Suspended --> Reconciling: Data Resolved (Hydration)
+    Reconciling --> Yielded: Metabolic Timeout / High-Pri Interruption
+    Yielded --> Reconciling: Resume via Task Recovery
+    Reconciling --> Completed: Diffing Finalized (Atomic)
+    Completed --> Committed: Atomic State Swap (Synaptic Commit)
+    Committed --> PassiveEffects: Post-Commit Processing (Dreaming/LTM)
+    PassiveEffects --> [*]: Dopamine Feedback Loop Stabilized
+
+
+### 2.3 The Metabolic Gatekeeper (Lanes & Priority Scheduler)
 
 mermaid
 graph TD
-    Input[Information Input Stream] --> Scheduler[Cognitive Fiber Scheduler]
-    Scheduler -->|Priority: High| Reconciliation[Cognitive Reconciliation Loop]
-    Scheduler -->|Priority: Low| Background[Deferred Background Sync]
-    
-    subgraph "Reconciliation Phase (Render Phase)"
-    Reconciliation --> VCS[Virtual Cognitive State]
-    VCS --> Diffing{Diffing Engine}
-    Diffing -->|No Change| Drop[Abort/Drop Packet]
-    Diffing -->|Significant Diffs| Commit[Commit Phase]
-    end
-    
-    subgraph "Commit Phase (Side Effects)"
-    Commit --> LTM[Long-Term Memory Sync]
-    Commit --> Motor[Motor Function Execution]
-    Commit --> Dopamine[Dopaminergic Calibration]
-    end
-    
-    Commit --> Homeostasis[Metabolic Feedback Loop]
-    Homeostasis --> Scheduler
-    
-    style VCS fill:#f9f,stroke:#333,stroke-width:2px
-    style Diffing fill:#bbf,stroke:#333,stroke-width:2px
+    A[Incoming Stimulus] --> B{Lane Priority Assignment}
+    B -->|Urgent| C[UrgentReflex Lane]
+    B -->|Default| D[DefaultLane]
+    B -->|Background| E[IdleLane]
+    C --> F[Priority Queue]
+    D --> F
+    E --> F
+    F --> G[Cognitive Scheduler]
+    G --> H{ATP Budget Available?}
+    H -->|Yes| I[WorkLoop Execution]
+    H -->|No| J[Yield to Metabolic Recovery]
+    I --> K[Synaptic Commit]
 
 
 ---
 
-## 3. Cognitive Stress Test Suite (CSTS): Multi-Domain Calibration
+## 3. Priority Lanes & Bitmask Logic
 
-The CSTS is a rigorous retrieval and logic-check mechanism. It is used to calibrate the **Brake Sensitivity** by measuring the "Work Units" required to reconcile specific scientific truths.
+To prevent "Information Overflow," the system implements a bitmask-based lane system siphoned from `ReactFiberLane.js`. This allows multiple thought-processes to overlap without blocking the primary executive thread.
 
-### 3.1 Mathematical & Computational Reconciliation (The Hard Constants)
+### 3.1 Lane Priority Table
 
-| ID | Component Name | Stress Target | Expected Output / Logic |
-| :--- | :--- | :--- | :--- |
-| M-01 | Gauss Summation | Iterative Efficiency | Sum [1..100] = 5050. Formula: `n(n+1)/2`. Test: Sum [1..1,000,000] = 500,000,500,000. |
-| M-02 | Pi Precision | Floating Point Limit | The 1,000,000th digit of π. (Required for high-precision orbit calculation). |
-| M-03 | Mersenne Validation | Prime Sieve Logic | 2^82,589,933 − 1. Status: **Prime**. (Validated via GIMPS). |
-| M-04 | Riemann Hypothesis | Zero-Point Analysis | Non-trivial zeros of the zeta function ζ(s) have real part 1/2. |
-| M-05 | Gödel's Incompleteness| Logic Recursion | Proof that in any consistent formal system, there are statements that are neither provable nor disprovable. |
-
-### 3.2 Physical Layer & Astrophysical Constraints
-
-*   **Escape Velocity Hook (`V_esc`):**
-    *   *Earth:* 11.186 km/s.
-    *   *Solar:* 617.5 km/s.
-    *   *Logic:* Defines the kinetic boundary of a local system. Used to throttle "ambition" vs. "available energy."
-*   **The Chandrasekhar Limit:**
-    *   *Constraint:* ≈ 1.4 Solar Masses ($M_{\odot}$).
-    *   *Logic:* The maximum mass of a stable white dwarf star. Crossing this threshold triggers a Type Ia Supernova (and a system-wide Brake failure).
-*   **Radiometric Decay (`C-14`):**
-    *   *Constraint:* $N(t) = N_0 e^{-\lambda t}$. Half-life ≈ 5,730 years.
-    *   *Application:* Chronological reconciliation for biological artifacts.
-*   **Schwarzschild Radius ($R_s$):**
-    *   *Constraint:* $R_s = 2GM/c^2$.
-    *   *Logic:* Defines the event horizon. Information beyond this point cannot be reconciled by the Brake.
-
-### 3.3 Chemical, Biological & Genomic Interop
-
-*   **ATP Synthase RPM:**
-    *   *Constraint:* Mitochondrial ATP Synthase rotates at approximately 6,000 to 9,000 RPM.
-    *   *Logic:* The base metabolic clock speed of the biological host.
-*   **Avogadro’s Constant Interface:** Exactly 12g of Carbon-12 contains $6.02214076 \times 10^{23}$ atoms.
-*   **T2T Genomic Map:** 
-    *   *Constraint:* 3.055 billion base pairs.
-    *   *Logic:* The complete sequence of the human genome (Telomere-to-Telomere).
-*   **Neuronal Firing Threshold:**
-    *   *Constraint:* -55mV action potential trigger. Resting state at -70mV.
-    *   *Logic:* The hardware interrupt of the Dopaminergic system.
-
-### 3.4 Advanced Computer Science & Algorithm Complexity
-
-*   **Quicksort vs Timsort:**
-    *   *Constraint:* Quicksort $O(n^2)$ worst-case; Timsort $O(n \log n)$ stable.
-    *   *Logic:* Timsort (used in Python/Java) is the preferred algorithm for cognitive data sorting.
-*   **The Halting Problem:**
-    *   *Constraint:* Undecidable.
-    *   *Logic:* Prevents infinite reconciliation loops in the Brake's scheduler.
-*   **SHA-256 Hashing:**
-    *   *Constraint:* $2^{256}$ bit-state space. Used for data integrity verification of LTM blocks.
+| Lane Name | Bitmask (Binary) | Expiration (ms) | Cognitive Function | Priority |
+| :--- | :--- | :--- | :--- | :--- |
+| **UrgentReflex** | `0b0000...00001` | 0ms | Nociception, physical collision avoidance. | 0 (Critical) |
+| **SyncLane** | `0b0000...00010` | 16ms | Real-time social verbalization, motor control. | 1 |
+| **InputContinuous** | `0b0000...00100` | 100ms | Emotional facial recognition, object tracking. | 2 |
+| **DefaultLane** | `0b0000...01000"` | 500ms | Deliberate logic, problem solving. | 3 |
+| **TransitionLane** | `0b0011...00000` | 5000ms | Identity updates, long-term narrative shifts. | 4 |
+| **IdleLane** | `0b1000...00000` | None | Background memory defrag, dreaming/sorting. | 5 (Background) |
 
 ---
 
-## 4. Implementation: The Reconciliation Logic (Pseudo-React)
-
-This logic defines how the Brake processes a "Knowledge Node" using a concurrent fiber approach.
+## 4. Implementation: The Fiber-Cognition Engine
 
 javascript
 /**
- * @class CognitiveFiberScheduler
- * @description Manages the execution of cognitive work units.
+ * @module DopaminergicBrake
+ * @version 4.5.1-alpha
+ * @siphon Meta/React-Core/Fiber-Reconciler
  */
-class DopaminergicBrakeEngine {
-  constructor(metabolicThreshold) {
-    this.metabolicBudget = metabolicThreshold;
-    this.pendingWork = [];
-    this.priorityQueue = new PriorityQueue();
+
+const NoLanes = 0b0000;
+const SyncLane = 0b0001;
+const DefaultLane = 0b0010;
+const TransitionLane = 0b0100;
+
+/**
+ * Represents a single thought unit or sensory fiber.
+ */
+class FiberNode {
+  constructor(tag, pendingProps, key) {
+    this.tag = tag;
+    this.key = key;
+    this.pendingProps = pendingProps;
+    this.memoizedProps = null;
+    this.beliefState = null;
+    this.updateQueue = null;
+    
+    // Fiber Tree Connections
+    this.return = null;
+    this.child = null;
+    this.sibling = null;
+    this.index = 0;
+    
+    // Double Buffering
+    this.alternate = null;
+    
+    // Cognitive Priority
+    this.lanes = NoLanes;
+    this.childLanes = NoLanes;
   }
+}
 
-  /**
-   * Performs a "Reconciliation Loop" to see if information is worthy of Dopamine Release.
-   */
-  reconcileKnowledgeNode(nextNode, currentVCS) {
-    const diff = this.performDiff(nextNode, currentVCS);
-
-    if (diff.importance < BRAKE_SENSITIVITY) {
-      // Siphon DNA: Defer this work using Fiber-like idle periods
-      return this.scheduleDeferredUpdate(nextNode);
-    }
-
-    // High importance: Commit to LTM immediately
-    this.commitToCognitiveState(nextNode);
-    this.triggerDopaminePulse(diff.magnitude);
-  }
-
-  performDiff(a, b) {
-    // Complex recursive diffing logic between Virtual State and Incoming Signal
-    return { 
-      magnitude: Math.abs(a.value - b.value), 
-      importance: a.metadata.impactFactor 
+class FiberCognitionEngine {
+  constructor(metabolicConfig) {
+    this.atpBudget = metabolicConfig.atpBudget; 
+    this.thermalLimit = metabolicConfig.thermalLimit;
+    
+    this.currentTree = new FiberNode('ROOT', null, null);
+    this.workInProgress = null;
+    this.pendingLanes = NoLanes;
+    
+    this.profiler = new NeuroMetabolicProfiler();
+    this.scheduler = new ConcurrentScheduler();
+    
+    // Hook storage siphoned from ReactDispatcher
+    this.hookContext = {
+      currentFiber: null,
+      workInProgressHook: null
     };
   }
 
-  triggerDopaminePulse(magnitude) {
-    if (magnitude > this.metabolicBudget) {
-      console.warn("BREAKER TRIGGERED: Preventing Neuro-Saturation");
-      this.applyInhibitoryDamping();
+  /**
+   * High-frequency sensory dispatch siphoned from updateContainer
+   */
+  scheduleThought(update, lanePriority) {
+    const fiber = this.currentTree;
+    this.pendingLanes |= lanePriority;
+    
+    // Create Update object (Cognitive Action)
+    const updateObj = {
+      lane: lanePriority,
+      payload: update,
+      next: null
+    };
+    
+    this.enqueueUpdate(fiber, updateObj);
+    this.ensureWorkIsScheduled();
+  }
+
+  enqueueUpdate(fiber, update) {
+    const updateQueue = fiber.updateQueue || { baseState: fiber.beliefState, firstUpdate: null };
+    if (updateQueue.firstUpdate === null) {
+      updateQueue.firstUpdate = update;
     } else {
-      process.emit('SYNAPTIC_REWARD', magnitude);
+      let last = updateQueue.firstUpdate;
+      while (last.next !== null) last = last.next;
+      last.next = update;
     }
+    fiber.updateQueue = updateQueue;
+  }
+
+  ensureWorkIsScheduled() {
+    const nextLane = this.getNextLoudestLane();
+    if (nextLane === NoLanes) return;
+
+    // Perform work asynchronously if priority allows (Concurrent Mode)
+    this.scheduler.scheduleTask(nextLane, () => {
+        this.performConcurrentWorkOnRoot(nextLane);
+    });
+  }
+
+  performConcurrentWorkOnRoot(lane) {
+    // Setup work-in-progress tree (speculative worldview)
+    this.prepareFreshStack(lane);
+    
+    // Recursive Work Loop with Metabolic Gatekeeping
+    do {
+      try {
+        this.workLoopConcurrent();
+        break;
+      } catch (thrownValue) {
+        if (thrownValue instanceof SuspenseError) {
+           // Suspend cognition while fetching long-term memory
+           this.handleSuspense(thrownValue);
+        } else {
+           this.handleError(thrownValue);
+        }
+      }
+    } while (true);
+
+    if (this.workInProgress === null) {
+      this.commitRoot();
+    }
+  }
+
+  workLoopConcurrent() {
+    // Time-slicing logic: Interrupt long thoughts before they cause burnout
+    while (this.workInProgress !== null && !this.shouldYield()) {
+      this.performUnitOfWork(this.workInProgress);
+    }
+  }
+
+  shouldYield() {
+    const thermalState = this.profiler.getInternalTemperature();
+    const burnRate = this.profiler.getCycleBurn();
+    
+    // Siphon: React's shouldYield check adapted for biology
+    return burnRate > (this.atpBudget * 0.95) || thermalState > this.thermalLimit;
+  }
+
+  performUnitOfWork(unit) {
+    const current = unit.alternate;
+    const next = this.beginWork(current, unit, this.pendingLanes);
+    
+    unit.memoizedProps = unit.pendingProps;
+    if (next === null) {
+      this.completeUnitOfWork(unit);
+    } else {
+      this.workInProgress = next;
+    }
+  }
+
+  /**
+   * Reconciliation Diff: Belief vs. Reality
+   */
+  beginWork(current, workInProgress, renderLanes) {
+    if (current !== null) {
+      const oldBelief = current.beliefState;
+      const newSensoryData = workInProgress.pendingProps;
+      
+      if (oldBelief === newSensoryData && !this.includesLane(renderLanes, TransitionLane)) {
+        // Bailing out: Reality hasn't changed enough to warrant ATP spend
+        return this.bailoutOnAlreadyFinishedWork(current, workInProgress);
+      }
+    }
+    
+    // Update BeliefState based on pending updates in the queue
+    this.processUpdateQueue(workInProgress, renderLanes);
+    
+    return this.reconcileBeliefChildren(current, workInProgress);
+  }
+
+  commitRoot() {
+    const finishedWork = this.workInProgress;
+    this.currentTree = finishedWork;
+    
+    // COMMIT PHASE: Synchronous and non-interruptible
+    this.applySynapticUpdates(finishedWork);
+    this.flushPassiveEffects(); // Dreaming / Memory Defrag
+  }
+
+  getNextLoudestLane() {
+    // Priority bit-scanning logic
+    return this.pendingLanes & -this.pendingLanes;
   }
 }
 
 
 ---
 
-## 5. API Reference: Configuration & Control
+## 5. Metabolic Profiling & Thermal Constraints
 
-| Parameter | Type | Default | Fiber Equivalent | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `BRAKE_SENSITIVITY` | Float | 0.85 | `LanePriority` | High values (0.9+) inhibit almost all trivia, preserving high focus. |
-| `RECONCILIATION_INTERVAL`| Time | 16.6ms | `FrameBudget` | Syncs cognitive reconciliation with the 60Hz biological refresh rate. |
-| `DOPAMINE_REUPTAKE_DELAY`| Float | 0.4s | `CommitDelay` | Artificial delay to prevent addictive information loops. |
-| `SCHEDULER_STRATEGY` | String | 'CONCURRENT'| `ReactFiber` | Determines how tasks are prioritized (Serial vs Concurrent). |
-| `HEURISTIC_DAMPING` | Boolean| TRUE | `PureComponent` | If TRUE, ignores repeated information with zero-diff. |
+The Dopaminergic Brake is constrained by biological hardware. Excessive "specular thought" results in thermal throttling.
 
----
+### 5.1 Energy Consumption Metrics
+*   **Basal Reconciliation Cost:** 0.05 ATP/Fiber Node
+*   **Deep Memory Fetch (Suspense):** 2.4 ATP/Request (Triggering a Wait cycle)
+*   **Synaptic Commit:** 5.0 ATP/Transaction (High-voltage spike)
+*   **Conflict Resolution:** 1.5 ATP/Node (When worldview diff is high)
 
-## 6. Historical Constants & Legacy Calibration Data
-
-For archival and verification purposes, the following constants are embedded in the Brake's ROM:
-
-1.  **Industrial/Steel:** Grade A36 Steel yield strength = 36,000 psi.
-2.  **Skeletal Architecture:** 206 bones (Adult) vs 270 (Neonatal).
-3.  **Electromagnetism:** Permeability of free space $\mu_0 = 4\pi \times 10^{-7} \text{ H/m}$.
-4.  **Acoustics:** Speed of sound in dry air at 20°C = 343 m/s.
-5.  **Aeronautics:** First powered flight (Wright Bros) = Dec 17, 1903 (12 seconds).
+### 5.2 Thermal Safety Function
+$$T_{neu} = T_{ambient} + \sum_{i=1}^{n} (ATP_{lane} \times Complexity_{fiber})$$
+If $T_{neu} > 39.5^\circ C$, the system forces a `SyncLane` drop and enters **SafeMode (Catatonia)** until cooldown is achieved via the `PassiveEffects` cycle.
 
 ---
 
-## 7. Operational Glossary
+## 6. Advanced Cognitive Hooks
 
-*   **Cognitive Fiber:** A unit of thought capable of being paused and resumed.
-*   **Dopaminergic Noise:** Low-entropy information that triggers reward signals without adding to the VCS.
-*   **State Reconciliation:** The process of ensuring the host's internal model of reality (VCS) matches external sensory input.
-*   **Synaptic Fiber Scheduler:** The primary mechanism that prevents all "Work Units" from executing at once, maintaining metabolic stability.
+### 6.1 `useCognitiveTransition()`: Handling Identity Shifting
+Used when navigating high-latency philosophical shifts. It allows the "Worldview" to update in the background without freezing the "Social Speech" loop.
+
+javascript
+const [isRebranding, startTransition] = useCognitiveTransition();
+
+function handleLifeCrisis(newPhilosophy) {
+  startTransition(() => {
+    // This complex identity update is marked as non-blocking (TransitionLane)
+    // The executive thread continues to handle "SyncLanes" (e.g. driving a car)
+    updateDeepSelf(newPhilosophy);
+  });
+}
+
+
+### 6.2 `useCognitiveMemo()`: Logic Persistence
+Caches heavy logical deductions. Only recalculates if the input sensory fibers change significantly, preventing metabolic waste on redundant problem-solving.
+
+### 6.3 `useDeferredValue()`: Sensory Jitter Compensation
+When sensory input is noisy due to fatigue, this hook returns a "stable" version of reality from the previous commit until the current reconciliation stabilizes.
 
 ---
-**Note on Evolution:** Round 3/10 complete. Source DNA (React-Core) successfully integrated. Future mutations will focus on adding **Type-Safe Cognitive Hooks** and **Automated Logic Proofing** via siphoned Z3-Solver patterns.
+
+## 7. Cognitive Stress Test Suite (CSTS)
+
+### 7.1 Formal Mathematical Anchors
+| ID | Logic Gate | Complexity | Mathematical Constraint |
+| :--- | :--- | :--- | :--- |
+| CSTS-01 | **Gauss Sum** | O(1) | $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$ |
+| CSTS-02 | **Shannon Entropy** | O(n log n) | $H(X) = -\sum P(x_i) \log P(x_i)$ |
+| CSTS-03 | **Bekenstein Bound** | O(Volume) | $S \leq \frac{2\pi RE}{\hbar c}$ |
+| CSTS-04 | **Euler Anchor** | O(1) | $e^{i\pi} + 1 = 0$ (Ground Truth Constant) |
+| CSTS-05 | **Bayesian Prior** | O(n) | $P(A|B) = \frac{P(B|A)P(A)}{P(B)}$ |
+
+---
+
+## 8. Operational Glossary
+
+*   **Cognitive Hydration:** The process of attaching historical meaning (context) to raw sensory fibers during the reconciliation phase.
+*   **Metabolic Frame Drop:** Occurs when the `workLoop` yields before a high-priority fiber is committed, resulting in momentary confusion or "brain fog."
+*   **Bailing Out:** The critical optimization where identical stimuli (e.g., a clock ticking) are skipped during reconciliation to preserve metabolic energy.
+*   **Priority Starvation:** When low-priority thoughts (e.g., "I should clean my room") are indefinitely deferred by high-priority dopamine-driven loops.
+*   **Synaptic Committing:** The final, non-interruptible phase where speculative thoughts become the "current" worldview.
+*   **Suspense:** A state where a fiber tree waits for "Asynchronous Memory Fetching" to complete before rendering the full worldview.
+
+---
